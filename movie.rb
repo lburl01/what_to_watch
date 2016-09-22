@@ -1,6 +1,18 @@
 require 'csv'
+require_relative 'user'
+require_relative 'rating'
 
 class Movie
+attr_reader :movie_id, :movie_title
+
+  def initialize(movie_id)
+    @movie_id = movie_id
+    @movie_title = movie_title
+  end
+
+  def get_user_input_of_id
+    user_input = gets.chomp.to_i
+  end
 
   def find_movie_name_with_id
     output = []
