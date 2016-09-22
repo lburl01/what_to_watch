@@ -1,6 +1,12 @@
 require 'csv'
 
-output = CSV.foreach('uitem.csv', 'r:ISO-8859-1').map do |row|
-  row.to_csv(:col_sep => ", ")
+class Movie
+
+  def find_movie_name_with_id
+    output = []
+    CSV.foreach('uitem.csv', 'r:ISO-8859-1') {|row| output << row[0]}
+    movie_title = output[0].split('|')
+    movie_title[1]
+  end
+
 end
-puts output[0][4..12] # put an integer here (movie id in first column) and will call only that line's data
