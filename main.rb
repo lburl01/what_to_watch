@@ -10,7 +10,6 @@ require 'csv'
 require_relative 'file_reading'
 
 def find_movies_by_id(ratings_users_movie_ids, movie_id)
-  # get all movies with correct id
   movies_by_id = []
   ratings_users_movie_ids.each do |movie|
     if movie["movie_id"] == movie_id
@@ -21,7 +20,6 @@ def find_movies_by_id(ratings_users_movie_ids, movie_id)
 end
 
 def find_movie_title(movie_ids_titles, input)
-  # get all movies with correct id
   movie_title = {}
   movie_ids_titles.each do |movie|
     if movie["movie_id"] == input
@@ -35,10 +33,18 @@ def find_ratings_and_movies(ratings_users_movie_ids, movie_id)
   ratings_by_movie_id = []
   ratings_users_movie_ids.each do |movie|
     if movie["movie_id"] == movie_id
-      ratings_by_movie_id << movie["rating"]
+      ratings_by_movie_id << movie["rating"].to_f
     end
   end
   return ratings_by_movie_id
+end
+
+def avg_ratings_per_movie(ratings_users_movie_ids, movie_id)
+  ratings_by_movie_id = find_ratings_and_movies(ratings_users_movie_ids, movie_id)
+  total_ratings = ratings_by_movie_id.count
+  sum_of_ratings = ratings_by_movie_id.inject(:+)
+  all_ratings_average = sum_of_ratings / total_ratings
+  return all_ratings_average.round(2)
 end
 
 def get_user_input
@@ -77,6 +83,11 @@ def main
         movie_title = find_movie_title(movie_ids_titles, input)
         ratings_per_movie = find_ratings_and_movies(ratings_users_movie_ids, input)
         puts "All ratings for your movie #{movie_title}: #{ratings_per_movie}"
+      elsif user_mode_choice == 1
+        puts "Enter the Movie ID of your choice: "
+        input = get_user_input
+        averaged_ratings = avg_ratings_per_movie(ratings_users_movie_ids, input)
+        puts "Average of all ratings for the movie: #{averaged_ratings}"
       elsif want_to_keep_going?(user_mode_choice)
         puts "See you next time!"
         exit
