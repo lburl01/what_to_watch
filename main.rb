@@ -31,8 +31,14 @@ def find_movie_title(movie_ids_titles, input)
   return movie_title["movie_title"]
 end
 
-def movie_title_with_id(movie_id)
-  find_movies_by_id(movie_id)
+def find_ratings_and_movies(ratings_users_movie_ids, movie_id)
+  ratings_by_movie_id = []
+  ratings_users_movie_ids.each do |movie|
+    if movie["movie_id"] == movie_id
+      ratings_by_movie_id << movie["rating"]
+    end
+  end
+  return ratings_by_movie_id
 end
 
 def get_user_input
@@ -61,9 +67,16 @@ def main
     user_mode_choice = get_user_input.to_i
 
       if user_mode_choice == 4
+        puts "Enter the Movie ID of your choice: "
         input = get_user_input
         movie_title = find_movie_title(movie_ids_titles, input)
         puts "That movie's title is: #{movie_title}"
+      elsif user_mode_choice == 3
+        puts "Enter the Movie ID of your choice: "
+        input = get_user_input
+        movie_title = find_movie_title(movie_ids_titles, input)
+        ratings_per_movie = find_ratings_and_movies(ratings_users_movie_ids, input)
+        puts "All ratings for your movie #{movie_title}: #{ratings_per_movie}"
       elsif want_to_keep_going?(user_mode_choice)
         puts "See you next time!"
         exit
