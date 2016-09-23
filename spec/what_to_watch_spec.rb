@@ -25,3 +25,9 @@ describe 'rating.rb' do
   end
 
 end
+
+describe 'main.rb' do
+  it 'returns an array of hashes that includes all info associated to one movie_id' do
+    tomato =
+    expect(result)to eq()
+  end
