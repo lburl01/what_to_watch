@@ -32,7 +32,7 @@ def euclidean_distance(user_one_movies, user_two_movies)
   # Guard against empty arrays.
   return 0 if user_one_movies.length == 0
 
-  # Note that this is the same as vector subtraction. (whatever that means)
+  # Note that this is the same as vector subtraction. (whatever that means -LB)
   differences = 0.upto(user_one_movies.length - 1).map { |i| user_one_movies[i] - user_two_movies[i] }
   squares = differences.map { |diff| diff ** 2 }
   sum_of_squares = squares.reduce { |total, square| total + square }
@@ -42,31 +42,47 @@ def euclidean_distance(user_one_movies, user_two_movies)
   return euclidian_number
 end
 
+def want_to_keep_going?(user_input)
+  if user_input == "N"
+    return true
+  end
+end
+
 def main
 
   ratings_users_movie_ids = csv_to_array('udata.csv')
   movie_ids_titles = csv_to_array('uitem.csv')
 
-  print "Give the first User ID number, please: "
-  user_one = get_user_input
-  user_one_movies = get_seen_movie_ids(ratings_users_movie_ids, user_one)
+  loop do
 
-  print "Give the second User ID number, please: "
-  user_two = get_user_input
-  user_two_movies = get_seen_movie_ids(ratings_users_movie_ids, user_two)
+    print "Give the first User ID number, please: "
+    user_one = get_user_input
+    user_one_movies = get_seen_movie_ids(ratings_users_movie_ids, user_one)
 
-  common_movies = get_common_movies(user_one_movies, user_two_movies)
-  puts "Common movies seen by these users: #{common_movies}"
+    print "Give the second User ID number, please: "
+    user_two = get_user_input
+    user_two_movies = get_seen_movie_ids(ratings_users_movie_ids, user_two)
 
-  movie_similarity = euclidean_distance(user_one_movies, user_two_movies)
-  puts "#{movie_similarity}"
+    common_movies = get_common_movies(user_one_movies, user_two_movies)
+    puts "Common movies seen by these users: #{common_movies}"
 
-  if movie_similarity <= 0.5
-    puts "These users are not very similar at all!  Their Euclidian Distance is #{movie_similarity} where 1 is very similar and 0 is not similar at all."
-  else
-    puts "These users are quite similar!  Their Euclidian Distance is #{movie_similarity} where 1 is very similar and 0 is not similar at all."
+    movie_similarity = euclidean_distance(user_one_movies, user_two_movies)
+    if movie_similarity == 0
+    puts "#{movie_similarity}"
+
+    if movie_similarity <= 0.5
+      puts "These users are not very similar at all!  Their Euclidian Distance is #{movie_similarity} where 1 is very similar and 0 is not similar at all."
+    else
+      puts "These users are quite similar!  Their Euclidian Distance is #{movie_similarity} where 1 is very similar and 0 is not similar at all."
+    end
+
+    print "Would you like to try 2 more users? (Y) or (N)"
+    keep_going = get_user_input.upcase
+    if want_to_keep_going?(keep_going)
+      puts "See you next time!"
+      exit
+    end
   end
-
 end
 
 if __FILE__ == $PROGRAM_NAME

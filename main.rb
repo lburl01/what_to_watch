@@ -50,13 +50,17 @@ def find_ratings_per_user(ratings_users_movie_ids, user_id)
   return ratings_for_user
 end
 
+def find_top_movies(ratings_users_movie_ids, movie_ids_titles, input)
+
+end
+
 def get_user_input
   print ' > '
   input = gets.chomp
 end
 
 def want_to_keep_going?(user_input)
-  if user_input == 5
+  if user_input == 6
     return true
   end
 end
@@ -72,7 +76,8 @@ def main
     puts "(2) Find all ratings for a user by id"
     puts "(3) Find all ratings for a movie by id"
     puts "(4) Find the name of a movie by id"
-    puts "(5) Exit"
+    puts "(5) Get the top movies by rating"
+    puts "(6) Exit"
     user_mode_choice = get_user_input.to_i
 
       if user_mode_choice == 1
@@ -80,25 +85,36 @@ def main
         input = get_user_input
         averaged_ratings = avg_ratings_per_movie(ratings_users_movie_ids, input)
         puts "Average of all ratings for the movie: #{averaged_ratings}"
+
       elsif user_mode_choice == 2
         puts "Enter the User ID of your choice: "
         input = get_user_input
         ratings_by_user_id = find_ratings_per_user(ratings_users_movie_ids, input)
         puts "The user has left these ratings: #{ratings_by_user_id}"
+
       elsif user_mode_choice == 3
         puts "Enter the Movie ID of your choice: "
         input = get_user_input
         movie_title = find_movie_title(movie_ids_titles, input)
         ratings_per_movie = find_ratings_and_movies(ratings_users_movie_ids, input)
         puts "All ratings for your movie #{movie_title}: #{ratings_per_movie}"
+
       elsif user_mode_choice == 4
-      puts "Enter the Movie ID of your choice: "
-      input = get_user_input
-      movie_title = find_movie_title(movie_ids_titles, input)
-      puts "That movie's title is: #{movie_title}"
+        puts "Enter the Movie ID of your choice: "
+        input = get_user_input
+        movie_title = find_movie_title(movie_ids_titles, input)
+        puts "That movie's title is: #{movie_title}"
+
+      elsif user_mode_choice == 5
+        puts "The number of movies you'd like to see: "
+        input = get_user_input
+        top_movies = # function goes here
+        puts "The top #{input} movies are: #{top_movies}"
+
       elsif want_to_keep_going?(user_mode_choice)
         puts "See you next time!"
         exit
+
       else
         puts "You can't do that! Try entering a number between 1 and 5."
       end
