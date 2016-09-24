@@ -1,5 +1,6 @@
 
 require 'csv'
+require 'set'
 require_relative 'file_reading'
 
 def find_movies_by_id(ratings_users_movie_ids, movie_id)
@@ -32,6 +33,16 @@ def find_ratings_and_movies(ratings_users_movie_ids, movie_id)
   return ratings_by_movie_id
 end
 
+def find_top_movies(ratings_users_movie_ids, movie_ids_titles)
+  all_movies_with_avg_rating = Hash.new
+  all_movie_ids_array = get_all_movie_ids(movie_ids_titles)
+  all_movie_ids_array.each do |id|
+    avg_rating = avg_ratings_per_movie(ratings_users_movie_ids, id)
+    all_movies_with_avg_rating[id] = avg_rating
+  end
+  return all_movies_with_avg_rating
+end
+
 def avg_ratings_per_movie(ratings_users_movie_ids, movie_id)
   ratings_by_movie_id = find_ratings_and_movies(ratings_users_movie_ids, movie_id)
   total_ratings = ratings_by_movie_id.count
@@ -50,8 +61,16 @@ def find_ratings_per_user(ratings_users_movie_ids, user_id)
   return ratings_for_user
 end
 
-def find_top_movies(ratings_users_movie_ids, movie_ids_titles, input)
+def get_all_movie_ids(movie_ids_titles)
+  all_movie_ids = []
+  movie_ids_titles.each do |movie|
+    all_movie_ids << movie["movie_id"]
+  end
+  return all_movie_ids # each item is a string
+end
 
+def find_top_x_movies(all_movies_with_avg_rating, input)
+  input = get_user_input
 end
 
 def get_user_input
@@ -69,8 +88,10 @@ def main
 
   ratings_users_movie_ids = csv_to_array('udata.csv')
   movie_ids_titles = csv_to_array('uitem.csv')
+  all_movies_with_avg_rating = find_top_movies(ratings_users_movie_ids, movie_ids_titles)
 
   loop do
+    puts " "
     puts "What would you like to do?"
     puts "(1) Find the average ratings for a movie by id"
     puts "(2) Find all ratings for a user by id"
@@ -106,10 +127,10 @@ def main
         puts "That movie's title is: #{movie_title}"
 
       elsif user_mode_choice == 5
-        puts "The number of movies you'd like to see: "
-        input = get_user_input
-        top_movies = # function goes here
-        puts "The top #{input} movies are: #{top_movies}"
+        # puts "The number of movies you'd like to see: "
+        # input = get_user_input
+        top_movies = find_top_movies(ratings_users_movie_ids, movie_ids_titles)
+        puts "Movies and their avg rating: #{top_movies}"
 
       elsif want_to_keep_going?(user_mode_choice)
         puts "See you next time!"
