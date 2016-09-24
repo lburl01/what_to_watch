@@ -25,6 +25,23 @@ def get_common_movies(user_one_movies, user_two_movies)
   return common_movies_arary.sort
 end
 
+def euclidean_distance(user_one_movies, user_two_movies)
+  # Given two lists, give the Euclidean distance between them on a scale of 0 to 1.
+  # 1 means the two lists are identical.
+
+  # Guard against empty arrays.
+  return 0 if user_one_movies.length == 0
+
+  # Note that this is the same as vector subtraction. (whatever that means)
+  differences = 0.upto(user_one_movies.length - 1).map { |i| user_one_movies[i] - user_two_movies[i] }
+  squares = differences.map { |diff| diff ** 2 }
+  sum_of_squares = squares.reduce { |total, square| total + square }
+
+  euclidian_number = (1 / (1 + Math.sqrt(sum_of_squares))).round(5)
+
+  return euclidian_number
+end
+
 def main
 
   ratings_users_movie_ids = csv_to_array('udata.csv')
@@ -40,6 +57,15 @@ def main
 
   common_movies = get_common_movies(user_one_movies, user_two_movies)
   puts "Common movies seen by these users: #{common_movies}"
+
+  movie_similarity = euclidean_distance(user_one_movies, user_two_movies)
+  puts "#{movie_similarity}"
+
+  if movie_similarity <= 0.5
+    puts "These users are not very similar at all!  Their Euclidian Distance is #{movie_similarity} where 1 is very similar and 0 is not similar at all."
+  else
+    puts "These users are quite similar!  Their Euclidian Distance is #{movie_similarity} where 1 is very similar and 0 is not similar at all."
+  end
 
 end
 
