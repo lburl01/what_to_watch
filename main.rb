@@ -69,8 +69,10 @@ def get_all_movie_ids(movie_ids_titles)
   return all_movie_ids # each item is a string
 end
 
-def find_top_x_movies(all_movies_with_avg_rating, input)
-  input = get_user_input
+def get_top_movies(all_movies_with_avg_rating)
+  all_movies_with_avg_rating
+  # num_of_movies = input.to_i - 1
+  # movie_range =
 end
 
 def get_user_input
@@ -127,9 +129,9 @@ def main
         puts "That movie's title is: #{movie_title}"
 
       elsif user_mode_choice == 5
-        # puts "The number of movies you'd like to see: "
-        # input = get_user_input
-        top_movies = find_top_movies(ratings_users_movie_ids, movie_ids_titles)
+        puts "The number of movies you'd like to see: "
+        input = get_user_input
+        top_movies = get_top_movies(input)
         puts "Movies and their avg rating: #{top_movies}"
 
       elsif want_to_keep_going?(user_mode_choice)
