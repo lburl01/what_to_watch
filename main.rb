@@ -33,16 +33,6 @@ def find_ratings_and_movies(ratings_users_movie_ids, movie_id)
   return ratings_by_movie_id
 end
 
-def find_top_movies(ratings_users_movie_ids, movie_ids_titles)
-  all_movies_with_avg_rating = Hash.new
-  all_movie_ids_array = get_all_movie_ids(movie_ids_titles)
-  all_movie_ids_array.each do |id|
-    avg_rating = avg_ratings_per_movie(ratings_users_movie_ids, id)
-    all_movies_with_avg_rating[id] = avg_rating
-  end
-  return all_movies_with_avg_rating
-end
-
 def avg_ratings_per_movie(ratings_users_movie_ids, movie_id)
   ratings_by_movie_id = find_ratings_and_movies(ratings_users_movie_ids, movie_id)
   total_ratings = ratings_by_movie_id.count
@@ -69,10 +59,15 @@ def get_all_movie_ids(movie_ids_titles)
   return all_movie_ids # each item is a string
 end
 
-def get_top_movies(all_movies_with_avg_rating)
-  all_movies_with_avg_rating
-  # num_of_movies = input.to_i - 1
-  # movie_range =
+def get_top_movies(input, movie_ids_titles)
+  movie_ids_with_averages = File.new('movies_with_average_ratings.txt')
+  movie_range = movie_ids_with_averages.readlines[0..input].join('')
+  return movie_range
+end
+
+def add_movie_title_to_top(input, movie_ids_titles)
+  top_movies = get_top_movies(input, movie_ids_titles) # returns a string
+  return top_movies
 end
 
 def get_user_input
@@ -90,7 +85,6 @@ def main
 
   ratings_users_movie_ids = csv_to_array('udata.csv')
   movie_ids_titles = csv_to_array('uitem.csv')
-  all_movies_with_avg_rating = find_top_movies(ratings_users_movie_ids, movie_ids_titles)
 
   loop do
     puts " "
@@ -130,9 +124,10 @@ def main
 
       elsif user_mode_choice == 5
         puts "The number of movies you'd like to see: "
-        input = get_user_input
-        top_movies = get_top_movies(input)
-        puts "Movies and their avg rating: #{top_movies}"
+        input = get_user_input.to_i
+        # top_movies = get_top_movies(input, movie_ids_titles)
+        top_movies_with_title = add_movie_title_to_top(input, movie_ids_titles)
+        puts "Movies and their avg rating: #{top_movies_with_title}"
 
       elsif want_to_keep_going?(user_mode_choice)
         puts "See you next time!"
