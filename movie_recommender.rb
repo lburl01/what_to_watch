@@ -70,7 +70,7 @@ def main
     if movie_similarity == 0
     puts "#{movie_similarity}"
 
-    if movie_similarity <= 0.5
+    elsif movie_similarity <= 0.5
       puts "These users are not very similar at all!  Their Euclidian Distance is #{movie_similarity} where 1 is very similar and 0 is not similar at all."
     else
       puts "These users are quite similar!  Their Euclidian Distance is #{movie_similarity} where 1 is very similar and 0 is not similar at all."

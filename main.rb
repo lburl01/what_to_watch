@@ -139,14 +139,6 @@ def main
 
   end
 
-# movie_id, user_id
-#   average_movie_rating = Movie.get_average_rating
-#
-# # user_id, rating
-#   all_ratings_for_user = Rating.get_all_ratings_per_users
-#
-# # movie_id, rating
-#   all_ratings_for_movie = Rating.get_all_ratings_per_movie
 end
 
 if __FILE__ == $PROGRAM_NAME
